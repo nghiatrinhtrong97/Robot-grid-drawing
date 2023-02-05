@@ -25,18 +25,34 @@ void Grid::drawMoveTo(int x1, int y1)
     m_grid[x1][y1] = 1;
 }
 
-void Grid::drawLineTo(int x1, int y1, int x2, int y2)
+void Grid::drawLineTo(int currentX, int currentY, int x, int y)
 {
-    int xMin = std::min(x1, x2);
-    int xMax = std::max(x1, x2);
-    int yMin = std::min(y1, y2);
-    int yMax = std::max(y1, y2);
+    // int xMin = std::min(x1, x2);
+    // int xMax = std::max(x1, x2);
+    // int yMin = std::min(y1, y2);
+    // int yMax = std::max(y1, y2);
 
-    for (int x = xMin; x <= xMax; ++x) {
-        for (int y = yMin; y <= yMax; ++y) {
-            m_grid[x][y] = 1;
+    // for (int x = xMin; x <= xMax; ++x) {
+    //     for (int y = yMin; y <= yMax; ++y) {
+    //         m_grid[x][y] = 1;
+    //     }
+    // }
+    int startX = currentX;
+    int startY = currentY;
+    int deltaX = x - startX;
+    int deltaY = y - startY;
+    int steps = std::max(abs(deltaX), abs(deltaY));
+    float stepX = (float) deltaX / steps;
+    float stepY = (float) deltaY / steps;
+    for (int i = 0; i <= steps; i++) {
+        int drawX = startX + stepX * i;
+        int drawY = startY + stepY * i;
+        if (drawX >= 0 && drawX < m_size && drawY >= 0 && drawY < m_size) {
+            m_grid[drawX][drawY] = 1;
         }
     }
+    currentX = x;
+    currentY = y;
 }
 
 void Grid::print(int N) const

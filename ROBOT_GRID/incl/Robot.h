@@ -10,12 +10,12 @@ public:
     void moveTo(Grid *grid, int x, int y);
     void drawLineTo(Grid *grid, int x, int y);
     void showGrid(Grid *grid, int N);
-    int x() const;
-    int y() const;
+    int getCurrentX() const;
+    int getCurrentY() const;
 
 private:
-    int m_x;
-    int m_y;
+    int m_currentX;
+    int m_currentY;
 };
 
 #endif // ROBOT_H

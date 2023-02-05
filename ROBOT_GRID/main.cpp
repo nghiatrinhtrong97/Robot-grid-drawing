@@ -17,12 +17,13 @@ int main(int argc, char *argv[])
     //     return 1;
     // }
 
-    Grid grid;
-    Robot robot;
 
     std::vector<Command *> commands;
-    int a, b, c, d, e;
+    int a, b, c, d, e, f, g;
     char repeat = 'y';
+
+    Grid grid;
+    Robot robot;
 
     while (repeat == 'y' || repeat == 'Y')
     {
@@ -38,11 +39,16 @@ int main(int argc, char *argv[])
         std::cin >> d >> e;
         commands.push_back(new LineToCommand(&robot, &grid, d, e));
 
+        std::cout << "Enter value for LINE_TO (x, y): ";
+        std::cin >> f >> g;
+        commands.push_back(new LineToCommand(&robot, &grid, d, e));
+
         std::cout << std::endl;
 
         std::cout << "DIMENSION: " << a << std::endl;
         std::cout << "MOVE_TO: (" << b << ", " << c << ")" << std::endl;
         std::cout << "LINE_TO: (" << d << ", " << e << ")" << std::endl;
+        std::cout << "LINE_TO: (" << f << ", " << g << ")" << std::endl;
 
         for (Command *command : commands)
         {
@@ -50,6 +56,9 @@ int main(int argc, char *argv[])
         }
 
         robot.showGrid(&grid, a);
+
+        commands.clear();
+        grid.m_grid.resize(a, std::vector<int>(a, 0));
 
         std::cout << "Repeat? (y/n): ";
         std::cin >> repeat;

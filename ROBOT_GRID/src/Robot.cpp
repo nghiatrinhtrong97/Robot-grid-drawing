@@ -2,22 +2,22 @@
 #include "../incl/Grid.h"
 
 Robot::Robot()
-    : m_x(0), m_y(0)
+    : m_currentX(0), m_currentY(0)
 {
 }
 
 void Robot::moveTo(Grid *grid, int x, int y)
 {
     grid->drawMoveTo(x, y);
-    m_x = x;
-    m_y = y;
+    m_currentX = x;
+    m_currentY = y;
 }
 
 void Robot::drawLineTo(Grid *grid, int x, int y)
 {
-    grid->drawLineTo(m_x, m_y, x, y);
-    m_x = x;
-    m_y = y;
+    grid->drawLineTo(m_currentX, m_currentY, x, y);
+    m_currentX = x;
+    m_currentY = y;
 }
 
 void Robot::showGrid(Grid *grid, int N)
@@ -25,12 +25,12 @@ void Robot::showGrid(Grid *grid, int N)
     grid->print(N);
 }
 
-int Robot::x() const
+int Robot::getCurrentX() const
 {
-    return m_x;
+    return m_currentX;
 }
 
-int Robot::y() const
+int Robot::getCurrentY() const
 {
-    return m_y;
+    return m_currentY;
 }

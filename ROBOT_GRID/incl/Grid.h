@@ -20,6 +20,7 @@ public:
 
 private:
     int m_size;
+public:
     std::vector<std::vector<int>> m_grid;
 };
 #endif // GRID_H
