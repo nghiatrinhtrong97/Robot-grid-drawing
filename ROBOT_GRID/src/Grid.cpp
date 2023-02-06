@@ -1,71 +1,157 @@
-// void Grid::fillSquare(int x, int y) {
-//   // Implementation to fill a square on the grid
-// }
-
-// bool Grid::isSquareFilled(int x, int y) {
-//   // Implementation to check if a square is filled
-// }
-
 #include "../incl/Grid.h"
 #include <iostream>
 
 Grid::Grid()
-    : m_size(0), m_grid()
+    : m_size(0), m_currentX(0), m_currentY(0), m_square_grid()
 {
 }
 
 void Grid::setSize(int size)
 {
     m_size = size;
-    m_grid.resize(size, std::vector<int>(size, 0));
+    m_square_grid.resize(size, std::vector<int>(size, 0));
 }
 
-void Grid::drawMoveTo(int x1, int y1)
+int Grid::getCurrentX() const
 {
-    m_grid[x1][y1] = 1;
+    return m_currentX;
 }
 
-void Grid::drawLineTo(int currentX, int currentY, int x, int y)
+int Grid::getCurrentY() const
 {
-    // int xMin = std::min(x1, x2);
-    // int xMax = std::max(x1, x2);
-    // int yMin = std::min(y1, y2);
-    // int yMax = std::max(y1, y2);
+    return m_currentY;
+}
 
-    // for (int x = xMin; x <= xMax; ++x) {
-    //     for (int y = yMin; y <= yMax; ++y) {
-    //         m_grid[x][y] = 1;
-    //     }
-    // }
-    int startX = currentX;
-    int startY = currentY;
-    int deltaX = x - startX;
-    int deltaY = y - startY;
-    int steps = std::max(abs(deltaX), abs(deltaY));
-    float stepX = (float) deltaX / steps;
-    float stepY = (float) deltaY / steps;
-    for (int i = 0; i <= steps; i++) {
-        int drawX = startX + stepX * i;
-        int drawY = startY + stepY * i;
-        if (drawX >= 0 && drawX < m_size && drawY >= 0 && drawY < m_size) {
-            m_grid[drawX][drawY] = 1;
+float Grid::findMin(float x1, float x2){
+    return ((x1 < x2) ? x1 : x2);
+}
+
+float Grid::findMax(float x1, float x2){
+    return ((x1 > x2) ? x1 : x2);
+}
+
+void Grid::moveTo(int x1, int y1)
+{
+    if (x1 < 0 || x1 >= m_square_grid.size() || y1 < 0 || y1 >= m_square_grid.size())
+    {
+        std::cout << "Invalid input: line coordinates are out of grid boundaries." << std::endl;
+        return;
+    }
+    m_square_grid[x1][y1] = 1;
+    m_currentX = x1;
+    m_currentY = y1;
+}
+
+void Grid::drawLineTo(int x, int y)
+{
+    if (x < 0 || x >= m_square_grid.size() || y < 0 || y >= m_square_grid.size())
+    {
+        std::cout << "Invalid input: line coordinates are out of grid boundaries." << std::endl;
+        return;
+    }
+
+    int currentX = m_currentX;
+    int currentY = m_currentY;
+
+    float startX = (float)currentX + 0.5;
+    float startY = (float)currentY + 0.5;
+    float endX = (float)x + 0.5;
+    float endY = (float)y + 0.5;
+
+    int deltaX = x - currentX;
+    int deltaY = y - currentY;
+
+    if (deltaX == 0)
+    {
+        int yMin = std::min(currentY, y);
+        int yMax = std::max(currentY, y);
+        for (int yFill = yMin; yFill <= yMax; yFill++)
+        {
+            m_square_grid[currentX][yFill] = 1;
+            // std::cout << "deltaX == 0, x: " << currentX << ", y: " << yFill << std::endl;
+        }
+        return;
+    }
+
+    if (deltaY == 0)
+    {
+        int xMin = std::min(currentX, x);
+        int xMax = std::max(currentX, x);
+        for (int xFill = xMin; xFill <= xMax; xFill++)
+        {
+            m_square_grid[xFill][currentY] = 1;
+            // std::cout << "deltaY == 0, x: " << xFill << ", y: " << currentY << std::endl;
+        }
+        return;
+    }
+
+    float m = (float)deltaY / (float)deltaX;
+    // std::cout << "m: "<< m << std::endl;
+    float c = startY - m * startX;
+    // std::cout << "c: "<< c << std::endl;
+
+    int xMin = std::min(currentX, x);
+    int xMax = std::max(currentX, x);
+    int yMin = std::min(currentY, y);
+    int yMax = std::max(currentY, y);
+
+    float yMinFloat = std::min(startY, endY);
+    float yMaxFloat = std::max(startY, endY);
+
+    for (int xFill = xMin; xFill <= xMax; xFill++)
+    {
+        float yFillUpperCorner = 0;
+        float yFillBottomCorner = 0;
+
+        if((xFill == xMin)){
+            yFillUpperCorner = m * (xFill+0.5) + c;
+        }else{
+            yFillUpperCorner = m * xFill + c;
+        }
+
+        if((xFill == xMax)){
+            yFillBottomCorner = m * (xFill+0.5) + c;
+        }else{
+            yFillBottomCorner = m * (xFill+1) + c;
+        }
+
+        // std::cout << "yFillUpperCorner: "<< yFillUpperCorner << std::endl;
+        // std::cout << "yFillBottomCorner: "<< yFillBottomCorner << std::endl;
+        if (yFillUpperCorner >= yMinFloat && yFillUpperCorner <= yMaxFloat)
+        {
+            float yMinCorner = std::min(yFillUpperCorner, yFillBottomCorner);
+            float yMaxCorner = std::max(yFillUpperCorner, yFillBottomCorner);
+            // std::cout << "yMinCorner: "<< yMinCorner << std::endl;
+            // std::cout << "yMaxCorner: "<< yMaxCorner << std::endl;
+            for(int yFill = int(yMinCorner); yFill <= int(yMaxCorner); yFill++)
+            {
+                m_square_grid[xFill][yFill] = 1;
+                // std::cout << "different, x: " << xFill << ", y: " << int(yFillUpperCorner) << std::endl;
+            }
+            // std::cout << "different, x: " << xFill << ", y: " << int(yFillUpperCorner) << std::endl;
         }
     }
-    currentX = x;
-    currentY = y;
+
+    m_currentX = x;
+    m_currentY = y;
+
+    // std::cout << "end" << std::endl;
 }
 
-void Grid::print(int N) const
+void Grid::showGrid() const
 {
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
+    for (int i = 0; i < m_size; i++)
+    {
+        for (int j = 0; j < m_size; j++)
+        {
             std::cout << "|--";
         }
         std::cout << "|" << std::endl;
-        for (int j = 0; j < N; j++) {
-            if(m_grid[i][j] == 1)
+        for (int j = 0; j < m_size; j++)
+        {
+            if (m_square_grid[i][j] == 1)
             {
-                std::cout << "|+ ";
+                std::cout << "|x ";
             }
             else
             {
@@ -74,7 +160,8 @@ void Grid::print(int N) const
         }
         std::cout << "|" << std::endl;
     }
-    for (int j = 0; j < N; j++) {
+    for (int j = 0; j < m_size; j++)
+    {
         std::cout << "|--";
     }
     std::cout << "|" << std::endl;

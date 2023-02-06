@@ -1,6 +1,12 @@
 #ifndef DIMENSION_COMMAND_H
 #define DIMENSION_COMMAND_H
 
+/******************************************************************************************
+This class represents the DIMENSION command. 
+It has a member variable int m_size that stores the value of N passed to the DIMENSION command. 
+It implements the execute method of the Command interface to change the size of the grid.
+*******************************************************************************************/
+
 #include "Command.h"
 
 class Grid;
