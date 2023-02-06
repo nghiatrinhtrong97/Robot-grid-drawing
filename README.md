@@ -5,5 +5,5 @@ Robot grid drawing
 
 1. download source code
 2. decompression
-3. in 
-ROBOT_GRID folder run: mingw32-make (Windown)/ make(Linux)
+3. in ROBOT_GRID folder run: mingw32-make (Windown)/ make(Linux)
+4. run main.exe
