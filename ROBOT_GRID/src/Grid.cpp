@@ -115,6 +115,12 @@ void Grid::drawLineTo(int x, int y)
             yFillBottomCorner = m * (xFill+1) + c;
         }
 
+        // Fix for case the line goes through one of the 4 corners of a square
+        int yFillBottomCornerInt = (int)yFillBottomCorner;
+        if(yFillBottomCorner == (float)yFillBottomCornerInt){
+            yFillBottomCorner -= 1;
+        }
+
         // std::cout << "yFillUpperCorner: "<< yFillUpperCorner << std::endl;
         // std::cout << "yFillBottomCorner: "<< yFillBottomCorner << std::endl;
         if (yFillUpperCorner >= yMinFloat && yFillUpperCorner <= yMaxFloat)
