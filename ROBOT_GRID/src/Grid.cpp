@@ -53,6 +53,7 @@ void Grid::drawLineTo(int x, int y)
     int currentX = m_currentX;
     int currentY = m_currentY;
 
+    //Caculate the cooedinates of center squares 
     float startX = (float)currentX + 0.5;
     float startY = (float)currentY + 0.5;
     float endX = (float)x + 0.5;
@@ -68,7 +69,6 @@ void Grid::drawLineTo(int x, int y)
         for (int yFill = yMin; yFill <= yMax; yFill++)
         {
             m_square_grid[currentX][yFill] = 1;
-            // std::cout << "deltaX == 0, x: " << currentX << ", y: " << yFill << std::endl;
         }
         return;
     }
@@ -80,15 +80,14 @@ void Grid::drawLineTo(int x, int y)
         for (int xFill = xMin; xFill <= xMax; xFill++)
         {
             m_square_grid[xFill][currentY] = 1;
-            // std::cout << "deltaY == 0, x: " << xFill << ", y: " << currentY << std::endl;
+
         }
         return;
     }
 
+    //find the line with equation: y = mx + c
     float m = (float)deltaY / (float)deltaX;
-    // std::cout << "m: "<< m << std::endl;
     float c = startY - m * startX;
-    // std::cout << "c: "<< c << std::endl;
 
     int xMin = std::min(currentX, x);
     int xMax = std::max(currentX, x);
@@ -121,20 +120,14 @@ void Grid::drawLineTo(int x, int y)
             yFillBottomCorner -= 1;
         }
 
-        // std::cout << "yFillUpperCorner: "<< yFillUpperCorner << std::endl;
-        // std::cout << "yFillBottomCorner: "<< yFillBottomCorner << std::endl;
         if (yFillUpperCorner >= yMinFloat && yFillUpperCorner <= yMaxFloat)
         {
             float yMinCorner = std::min(yFillUpperCorner, yFillBottomCorner);
             float yMaxCorner = std::max(yFillUpperCorner, yFillBottomCorner);
-            // std::cout << "yMinCorner: "<< yMinCorner << std::endl;
-            // std::cout << "yMaxCorner: "<< yMaxCorner << std::endl;
             for(int yFill = int(yMinCorner); yFill <= int(yMaxCorner); yFill++)
             {
                 m_square_grid[xFill][yFill] = 1;
-                // std::cout << "different, x: " << xFill << ", y: " << int(yFillUpperCorner) << std::endl;
             }
-            // std::cout << "different, x: " << xFill << ", y: " << int(yFillUpperCorner) << std::endl;
         }
     }
 
@@ -150,25 +143,25 @@ void Grid::showGrid() const
     {
         for (int j = 0; j < m_size; j++)
         {
-            std::cout << "|--";
+            std::cout << "|---";
         }
         std::cout << "|" << std::endl;
         for (int j = 0; j < m_size; j++)
         {
             if (m_square_grid[i][j] == 1)
             {
-                std::cout << "|x ";
+                std::cout << "| x ";
             }
             else
             {
-                std::cout << "|  ";
+                std::cout << "|   ";
             }
         }
         std::cout << "|" << std::endl;
     }
     for (int j = 0; j < m_size; j++)
     {
-        std::cout << "|--";
+        std::cout << "|---";
     }
     std::cout << "|" << std::endl;
 }
