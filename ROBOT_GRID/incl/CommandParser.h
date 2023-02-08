@@ -15,6 +15,7 @@
 class CommandParser {
  public:
   CommandParser();
+  ~CommandParser();
 //   Command* parse(const std::string& input);
   Command* parse(Grid* grid, const std::string& input);
 

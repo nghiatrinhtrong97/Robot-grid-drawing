@@ -16,6 +16,7 @@ class MoveToCommand : public Command
 {
 public:
     MoveToCommand(Grid* grid, int x, int y);
+    ~MoveToCommand();
     void execute() override;
 
 private:

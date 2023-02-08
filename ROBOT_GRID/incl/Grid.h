@@ -19,6 +19,7 @@ class Grid
 {
 public:
     Grid();
+    ~Grid();
     void setSize(int size);
     void moveTo(int x1, int y1);
     void drawLineTo(int x2, int y2);

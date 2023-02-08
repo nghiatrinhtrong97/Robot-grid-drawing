@@ -16,6 +16,7 @@ class LineToCommand : public Command
 {
 public:
     LineToCommand(Grid* grid, int x, int y);
+    ~LineToCommand();
     void execute() override;
 
 private:

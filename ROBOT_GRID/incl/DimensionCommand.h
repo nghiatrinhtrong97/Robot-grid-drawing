@@ -15,6 +15,7 @@ class DimensionCommand : public Command
 {
 public:
     DimensionCommand(Grid* grid, int size);
+    ~DimensionCommand();
     void execute() override;
 
 private:

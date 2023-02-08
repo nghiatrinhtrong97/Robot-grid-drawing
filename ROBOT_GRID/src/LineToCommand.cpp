@@ -8,4 +8,5 @@ LineToCommand::LineToCommand(Grid* grid, int x, int y)
 void LineToCommand::execute()
 {
     m_grid->drawLineTo(m_x, m_y);
+    m_grid = nullptr;
 }

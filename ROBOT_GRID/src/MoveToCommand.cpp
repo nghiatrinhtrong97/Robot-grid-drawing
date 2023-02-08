@@ -8,4 +8,5 @@ MoveToCommand::MoveToCommand(Grid* grid, int x, int y)
 void MoveToCommand::execute()
 {
     m_grid->moveTo(m_x, m_y);
+    m_grid = nullptr;
 }

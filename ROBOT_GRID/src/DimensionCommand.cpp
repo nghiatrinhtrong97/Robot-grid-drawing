@@ -8,4 +8,5 @@ DimensionCommand::DimensionCommand(Grid* grid, int size)
 void DimensionCommand::execute()
 {
     m_grid->setSize(m_size);
+    m_grid = nullptr;
 }
