@@ -1,7 +1,7 @@
 # Robot-grid-drawing
 
 Robot grid drawing
-![image](https://user-images.githubusercontent.com/71679681/217058506-1b135a52-7239-45d6-971e-5b48bd5eeaed.png)
+![image](https://user-images.githubusercontent.com/71679681/217519552-b14883e3-5072-43af-982f-70fe4b8bfaae.png)
 
 1. download source code
 2. decompression
