@@ -1,13 +1,16 @@
 CC=g++
 CFLAGS= -Wall
 
-OBJECTS=main.o Grid.o Command.o DimensionCommand.o MoveToCommand.o LineToCommand.o
+OBJECTS=main.o CommandParser.o Grid.o Command.o DimensionCommand.o MoveToCommand.o LineToCommand.o
 
 main: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o main
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) -c main.cpp -o main.o
+	
+CommandParser.o: src/CommandParser.cpp incl/CommandParser.h
+	$(CC) $(CFLAGS) -c src/CommandParser.cpp -o CommandParser.o
 
 Grid.o: src/Grid.cpp incl/Grid.h
 	$(CC) $(CFLAGS) -c src/Grid.cpp -o Grid.o

@@ -1,97 +1,48 @@
-#include "incl/Command.h"
-#include "incl/DimensionCommand.h"
-#include "incl/MoveToCommand.h"
-#include "incl/LineToCommand.h"
-#include "incl/Grid.h"
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include "incl/CommandParser.h"
 
-int main(int argc, char *argv[])
-{
 
-    std::vector<Command *> commands;
-    int a(-1), b(-1), c(-1), d(-1), e(-1), f(-1), g(-1);
-    char repeat = 'y';
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cout << "input file name not provided " << std::endl;
+        return 1;
+    }
 
     Grid grid;
 
-    while (repeat == 'y' || repeat == 'Y')
+    std::string filename = argv[1];
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cout << "unable to open file " << std::endl;
+        return 1;
+    }
+
+    std::vector<Command*> commands;
+    CommandParser parser;
+    std::string line;
+    while (std::getline(file, line)) {
+        try {
+            Command* cmd = parser.parse(&grid, line);
+            if(cmd != nullptr){
+                commands.push_back(cmd);
+            }else{
+                std::cout << "unable to parse commands --------> EXIT " << std::endl;
+                return -1;
+            }
+        } catch (const std::exception& e) {
+            std::cout << "unable to parse commands " << e.what() << std::endl;
+        }
+    }
+
+    for (Command *command : commands)
     {
-        std::cout << "Enter value for DIMENSION: ";
-        if (!(std::cin >> a)) {
-            std::cout << "Error: Invalid input for dimension." << std::endl;
-            return 1;
-        }
-        commands.push_back(new DimensionCommand(&grid, a));
+        command->execute();
+    }
 
-        while (true)
-        {
-            std::cout << "Enter command: Enter 'm' for MOVE_TO and 'l' for LINE_TO"<< std::endl;
-            std::cout << "press any other key to display the final result" << std::endl;
-            std::cout << "your choice: ";
-            std::string command;
-            if (!(std::cin >> command))
-            {
-                std::cout << "Error: Invalid input for command type." << std::endl;
-                return 1;
-            }
-            if (command == "m" || command == "M")
-            {
-                std::cout << "Enter MOVE_TO coordinates (b, c): ";
-                if (!(std::cin >> b >> c))
-                {
-                    std::cout << "Error: Invalid input for MOVE_TO coordinates." << std::endl;
-                    return 1;
-                }
-                commands.push_back(new MoveToCommand(&grid, b, c));
-                for (Command *command : commands)
-                {
-                    command->execute();
-                }
-                grid.showGrid();
-                grid.m_square_grid.clear();
-            }
-            else if (command == "l" || command == "L")
-            {
-                std::cout << "Enter LINE_TO coordinates (d, e): ";
-                if (!(std::cin >> d >> e))
-                {
-                    std::cout << "Error: Invalid input for LINE_TO coordinates." << std::endl;
-                    return 1;
-                }
-                commands.push_back(new LineToCommand(&grid, d, e));
-                for (Command *command : commands)
-                {
-                    command->execute();
-                }
-                grid.showGrid();
-                grid.m_square_grid.clear();
-            }
-            else
-            {
-                break;
-            }
-        }
+    grid.showGrid();
 
-        for (Command *command : commands)
-        {
-            command->execute();
-        }
-
-        grid.showGrid();
-
-        commands.clear();
-        grid.m_square_grid.clear();
-
-        std::cout << "Repeat? (y/n): ";
-
-        if (!(std::cin >> repeat))
-        {
-            std::cout << "Error: Invalid input and robot will sleep, bye and see you again." << std::endl;
-            return 1;
-        }
+    // clean up
+    for (Command* cmd : commands) {
+        delete cmd;
     }
 
     return 0;

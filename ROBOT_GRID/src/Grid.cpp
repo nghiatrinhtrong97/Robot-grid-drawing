@@ -34,7 +34,7 @@ void Grid::moveTo(int x1, int y1)
 {
     if (x1 < 0 || x1 >= m_square_grid.size() || y1 < 0 || y1 >= m_square_grid.size())
     {
-        std::cout << "Invalid input: line coordinates are out of grid boundaries." << std::endl;
+        std::cout << "Invalid input MOVE_TO: line coordinates are out of grid boundaries." << std::endl;
         return;
     }
     m_square_grid[x1][y1] = 1;
@@ -46,7 +46,7 @@ void Grid::drawLineTo(int x, int y)
 {
     if (x < 0 || x >= m_square_grid.size() || y < 0 || y >= m_square_grid.size())
     {
-        std::cout << "Invalid input: line coordinates are out of grid boundaries." << std::endl;
+        std::cout << "Invalid input LINE_TO: line coordinates are out of grid boundaries." << std::endl;
         return;
     }
 
